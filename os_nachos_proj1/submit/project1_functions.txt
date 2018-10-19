@@ -1,0 +1,8 @@
+1. void ReadyToRun(Thread* thread)
+This function marks a thread as ready by putting it on the ready list, for later scheduling onto the CPU. The input parameter "thread" is the thread to be put on the ready list. For scheduling policy FCFS (first-come first-served) and RR (round robin), it simply appends the thread to the end of the ready list. For policy PRIO_NP (non-preemptive priority scheduling), PRIO_P (preemptive priority scheduling) and MLQ (multilevel queue scheduling), it inserts the thread to the ready list so that the threads are sorted in increasing order by the sort key (thread->MAX_PRIORITY - thread->getPriority()), and thus in decreasing order of the thread priority. By default (for SJF (shortest job first) and MLFQ (multilevel feedback queue) which are not implemented) it appends the thread to the end of the ready list.
+
+2. Thread* FindNectToRun()
+This function gets the next thread to run by dequeuing the first thread in the ready list and return the thread. Its behavior is identical for all the scheduling policies.
+
+3. bool ShouldISwitch(Thread* oldThread, Thread* newThread)
+This function uses the information of the scheduling policy to tell a thread::fork to preempt the current thread or to not. For non-preemptive policies (FCFS, PRIO_NP, RR), the answer is always false. For preemptive policies (PRIO_P, MLQ), it compares the priorities of the new thread and the old thread, and returns true when the priority of the new thread is larger. By default (for SJF and MLFQ which are not implemented) it returns false.

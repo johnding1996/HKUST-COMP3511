@@ -1,0 +1,21 @@
+1. Why did we use the function running_for_calculation()?
+We call the function running_for_calculation() in threads to take up the CPU for a period of time so that the threads will not end right after they start. This ensures that we can see the differences between the thread running orders under different scheduling policies.
+
+2. What kind of service does the function currentThread->Yield() provide?
+The function currentThread->Yield() relinquishes the CPU occupied by the current thread if any other thread is ready to run. If so, it puts the current thread at the end of the ready list (so that it will eventually be re-scheduled), and run the next thread to run.
+
+3. What is the relationship between the function Fork() and the function prior_thread(int arg)?
+When we call the Fork() function of Thread1, we pass the void function pointer func (of prior_thread(int arg)), and the argument arg (of prior_thread(int arg)) to it. The Fork() function invokes (*func)(arg) (prior_thread(arg)), alloing the caller and callee to execute concurrently. It is implemented as three steps: (1) allocate a stack, (2) initialize the stack so that a call to SWITCH will cause it to run the procedure, (3) put the thread to the ready queue, or interrupt the current thread if ShouldISwitch(currentThread, this) returns true.
+
+4. Explain how were the values of 'The global variable in Thread1' and 'The global variable in Thread2' generated in project1_output4.txt.
+For the scenario of project1_output4.txt, Thread1 suspends Thread2 before it starts to run, and resumes Thread2 right before Thread1 ends. This ensures that the operation on global variable in Thread1 is done before the corresponding operation on global variable in Thread2. The initial value of the global variable is 1. In Thread1, "global += 3;" changes its value to 4, so that we see Thread1 outputs "The global variable in Thread1 is 4". Later in Thread2, "global *= 5;" changes its value to 20, so that we see Thread2 outputs "The global variable in Thread2 is 20".
+
+5. Find out the difference among the outputs of	task 3 which are saved in project1_output3.txt,	project1_output4.txt and project1_output5.txt, respectively. Describe and explain the difference briefly.
+Differences:
+ - output3: Thread1 prints hello message first. Thread2 then prints hello message, does calculations, updates global variable, and ends. Thread1 finally does calculations, updates global variable, and ends.
+ - output4: Thread1 prints hello message, does calculations, updates global variable, and ends. Thread2 then prints hello message, does calculations, updates global variable, and ends.
+ - output5: Thread2 prints hello message and does calculations. Thread2 then prints hello message, does calculations, updates global variable, and ends. Thread1 finally updates global variable, and ends.
+Reasons:
+ - output3: Thread2 suspends Thread1 right after Thread2 prints hello message, and resumes Thread1 right before Thread2 ends. Since the time required for doing calculation is much larger than the other parts, Thread1 can only finish calculation (and the subsequent parts) after Thread2 ends.
+ - output4: Thread1 suspends Thread2 right after Thread1 prints hello message, and resumes Thread2 right before Thread1 ends. Since the time required for printing hello is very small, Thread2 can only print hello message (and finish the subsequent parts) after Thread2 ends.
+ - output5: Thread1 calls its Yield() funciton after finishing calculation. Therefore, Thread2 starts running and Thread1 goes to the end of ready list and will not run (and finishes its subsequent parts) until Thread2 ends.

@@ -1,6 +1,5 @@
         .text
         .align 2
-
         .global ThreadRoot
 ThreadRoot:
         pushl %ebp
@@ -9,14 +8,11 @@ ThreadRoot:
         call %ecx
         call %esi
         call %edi
-
         # NOT REACHED
-
         movl %ebp,%esp
         popl %ebp
         ret
         .comm _eax_save,4
-
         .global SWITCH
 SWITCH:
         movl %eax,_eax_save # save the value of eax
@@ -32,9 +28,7 @@ SWITCH:
         movl %ebx,4(%eax) # store it
         movl 0(%esp),%ebx # get return address from stack into ebx
         movl %ebx,32(%eax) # save it into the pc storage
-
         movl 8(%esp),%eax # move pointer to t2 into eax
-
         movl 4(%eax),%ebx # get new value for eax into ebx
         movl %ebx,_eax_save # save it
         movl 8(%eax),%ebx # retore old registers
@@ -47,5 +41,4 @@ SWITCH:
         movl 32(%eax),%eax # restore return address into eax
         movl %eax,4(%esp) # copy over the ret address on the stack
         movl _eax_save,%eax
-
         ret
