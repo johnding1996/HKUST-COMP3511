@@ -10,7 +10,7 @@ When we call the Fork() function of Thread1, we pass the void function pointer f
 4. Explain how were the values of 'The global variable in Thread1' and 'The global variable in Thread2' generated in project1_output4.txt.
 For the scenario of project1_output4.txt, Thread1 suspends Thread2 before it starts to run, and resumes Thread2 right before Thread1 ends. This ensures that the operation on global variable in Thread1 is done before the corresponding operation on global variable in Thread2. The initial value of the global variable is 1. In Thread1, "global += 3;" changes its value to 4, so that we see Thread1 outputs "The global variable in Thread1 is 4". Later in Thread2, "global *= 5;" changes its value to 20, so that we see Thread2 outputs "The global variable in Thread2 is 20".
 
-5. Find out the difference among the outputs of	task 3 which are saved in project1_output3.txt,	project1_output4.txt and project1_output5.txt, respectively. Describe and explain the difference briefly.
+5. Find out the difference among the outputs of task 3 which are saved in project1_output3.txt,	project1_output4.txt and project1_output5.txt, respectively. Describe and explain the difference briefly.
 Differences:
  - output3: Thread1 prints hello message first. Thread2 then prints hello message, does calculations, updates global variable, and ends. Thread1 finally does calculations, updates global variable, and ends.
  - output4: Thread1 prints hello message, does calculations, updates global variable, and ends. Thread2 then prints hello message, does calculations, updates global variable, and ends.
