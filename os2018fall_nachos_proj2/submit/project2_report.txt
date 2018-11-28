@@ -1,0 +1,79 @@
+1.  1) Average waiting time: 8 processes
+		For all cases:
+			arrival time 0, 0, 10, 13, 13, 18, 20, 20
+			sum 94
+		For test0 (FCFS): Non-preemptive
+			starting time 0, 9, 20, 25, 48, 81, 107, 114
+			sum 404
+			average waiting time (404-94)/8 = 38.75
+		For test1 (SJF): Non-preemptive
+			starting time 0, 9, 20, 25, 32, 44, 67, 93
+			sum 290
+			average waiting time (290-94)/8 = 24.5
+		For test2 (NP_Priority): Non-preemptive
+			starting time 0, 9, 20, 46, 53, 65, 70, 93
+			sum 356
+			average waiting time (356-94)/8 = 32.75
+		For test3 (Priority Scheduling): preemptive
+			burst time 9, 11, 5, 23, 33, 26, 7, 12
+			sum 126
+			finish time 9, 15, 44, 51, 63, 70, 93, 126
+			sum 471
+			average waiting time (471-126-94)/8 = 31.375
+		For test4_1 (MLQ 1): Non-preemptive
+			starting time 0, 9, 20, 43, 76, 81, 88, 100
+			sum 417
+			average waiting time (417-94)/8 = 40.375
+		For test4_2 (MLQ 2): Non-premmptive
+			starting time 0, 9, 21, 44, 70, 77, 110, 115
+			sum 446
+			average waiting time (446-94)/8 = 44
+	2) Average response time: 
+		For each process, making the first response requires exactly one tick.
+		Thus, for non-preemptive scheduling, the average response time is the average waiting time plus 1.
+		For test0 (FCFS): Non-preemptive
+			average response time 38.75+1 = 39.75
+		For test1 (SJF): Non-preemptive
+			average response time 24.5+1 = 25.5
+		For test2 (NP_Priority): Non-preemptive
+			average response time 32.75+1 = 33.75
+		For test4_1 (MLQ 1): Non-preemptive
+			average response time 40.375+1 = 41.375
+		For test4_2 (MLQ 2): Non-premmptive
+			average response time 44+1 = 45
+		In contrast, for preemptive scheduing, we have to collect the starting time
+		For test3 (Priority Scheduling): preemptive
+			starting time 0, 9, 10, 18, 44, 51, 70, 93
+			sum 295
+			average response time (295+8-94)/8 = 26.125
+	3) Average turn-around time:
+		Thus, for non-preemptive scheduling, the average turn around time is the average waiting time plus the average burst time 126/8 = 15.75
+		For test0 (FCFS): Non-preemptive
+			average turn-aound time 38.75+15.75 = 54.5
+		For test1 (SJF): Non-preemptive
+			average turn-aound time 24.5+15.75 = 40.25
+		For test2 (NP_Priority): Non-preemptive
+			average turn-aound time 32.75+15.75 = 48.5
+		For test4_1 (MLQ 1): Non-preemptive
+			average turn-aound time 40.375+15.75 = 56.125
+		For test4_2 (MLQ 2): Non-premmptive
+			average turn-aound time 44+15.75 = 59.75
+		In contrast, for preemptive scheduling, we use the finish time
+		For test3 (Priority Scheduling): preemptive
+			average turn-aound time (471-94)/8 = 47.125
+2.  For FCFS:
+		pros: simplicity as easy to implement, less overhead of context-switch
+		cons: relatively large average waiting time when large task grabs the processor
+	For SJF:
+		pros: smallest possible average waiting time and maximizes the task throughput
+		cons: large tasks might wait indefinitely long, and the prediction of burst time might be inaccurate
+3.  For NP_Priority:
+		pros: less overhead of context-switch
+		cons: relatively larger average response time as the tasks are non-preemptive
+	For Priority:
+		pros: achieve smaller average response time, also have slightly smaller average waiting time and turn-around time in our test
+		cons: larger overhead of context-switch
+	Differences of output of test3 compared with output of test2:
+		In test3, there are preemptive switching from "threadB" to "threadC" and from "threadB" to "threadF", which do not occur in test2.
+4.  Differences of output of test4_2 compared with output of test4_1:
+		Since both tests are non-preemptive, we can talk about the execution order of the 8 processes. In test4_1, the execution order is A, B, D, E, C, G, H, F, while in test4_2, the execution order is A, B, F, G, H, C, D, E. The order changed since the priorities of processes and their start time were changed.
